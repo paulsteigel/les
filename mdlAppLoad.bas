@@ -1,10 +1,10 @@
-'gistThat@mcpher.com :do not modify this line - see ramblings.mcpher.com for details: updated on 10/17/2017 11:17:59 PM : from manifest: gist https://raw.githubusercontent.com/paulsteigel/les/master/mdlAppLoad.bas
+'gistThat@mcpher.com :do not modify this line - see ramblings.mcpher.com for details: updated on 10/18/2017 12:33:33 AM : from manifest: gist https://raw.githubusercontent.com/paulsteigel/les/master/mdlAppLoad.bas
 Option Explicit
 
 Function GetAppVersion() As Long
     ' This is to get current version of the application
     ' Modify this line when a new version is comming
-    GetAppVersion = 2
+    GetAppVersion = 3
 End Function
 
 Sub Patch()
@@ -27,15 +27,15 @@ Private Sub SetValidation()
     ProtectSheet False
     While Ptr <> ""
         If Ptr.Offset(-1) = "INTEGER" Or Ptr.Offset(-1) = "SINGLE" Then
-            If IsRangeValid(Range(Ptr)) Then
+            If IsRangeValid(CStr(Ptr.Value)) Then
                 If Not Range(Ptr).Locked Then
-                    SetValidationX Range(Ptr), W1, W1txt, E1, E1txt
+                    ApplyValidation Range(Ptr), W1, W1txt, E1, E1txt
                 End If
             End If
         End If
         Set Ptr = Ptr.Offset(0, 1)
     Wend
-    ProtectSheet False
+    ProtectSheet True
 End Sub
 
 Private Sub ProtectSheet(Prm As Boolean)
@@ -47,7 +47,7 @@ Private Sub ProtectSheet(Prm As Boolean)
     Set tsh = Nothing
 End Sub
 
-Private Sub SetValidationX(tCell As Range, Vl1 As String, vl2 As String, vl3 As String, vl4 As String)
+Private Sub ApplyValidation(tCell As Range, Vl1 As String, vl2 As String, vl3 As String, vl4 As String)
     With tCell.Validation
         .Delete
         .Add Type:=xlValidateDecimal, AlertStyle:=xlValidAlertStop, Operator _
