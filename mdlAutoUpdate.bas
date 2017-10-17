@@ -14,162 +14,7 @@ Option Explicit
     Private Const INTERNET_CONNECTION_OFFLINE As Long = &H20
 #End If
 
-Private Const gistOwner = "paulsteigel"
-' Import
-#If VBA7 Then
-    Private Declare PtrSafe Function GetCurrentThreadId Lib "kernel32" () As LongPtr
-    Private Declare PtrSafe Function SetDlgItemText Lib "user32" Alias "SetDlgItemTextW" (ByVal hDlg As LongPtr, ByVal nIDDlgItem As LongPtr, ByVal lpString As String) As LongPtr
-    Private Declare PtrSafe Function SetWindowsHookEx Lib "user32" Alias "SetWindowsHookExA" (ByVal idHook As LongPtr, ByVal lpfn As LongPtr, ByVal hmod As LongPtr, ByVal dwThreadId As LongPtr) As LongPtr
-    Private Declare PtrSafe Function UnhookWindowsHookEx Lib "user32" (ByVal hHook As LongPtr) As LongPtr
-#Else
-    Private Declare Function GetCurrentThreadId Lib "kernel32" () As Long
-    Private Declare Function SetDlgItemText Lib "user32" Alias "SetDlgItemTextW" (ByVal hDlg As Long, ByVal nIDDlgItem As Long, ByVal lpString As String) As Long
-    Private Declare Function SetWindowsHookEx Lib "user32" Alias "SetWindowsHookExA" (ByVal idHook As Long, ByVal lpfn As Long, ByVal hmod As Long, ByVal dwThreadId As Long) As Long
-    Private Declare Function UnhookWindowsHookEx Lib "user32" (ByVal hHook As Long) As Long
-#End If
-
-' Handle to the Hook procedure
-#If VBA7 Then
-    Private hHook As LongPtr
-#Else
-    Private hHook As Long
-#End If
-' Hook type
-Private Const WH_CBT = 5
-Private Const HCBT_ACTIVATE = 5
- 
-' Constants
-Private Const IDOK = 1
-Private Const IDCANCEL = 2
-Private Const IDABORT = 3
-Private Const IDRETRY = 4
-Private Const IDIGNORE = 5
-Private Const IDYES = 6
-Private Const IDNO = 7
-
-' Modify this code for English
-Private StrYes As String
-Private StrNo As String
-Private StrOK As String
-Private StrCancel As String
-
-'=============================================
-Global Const VnDate = "dd/mm/yyyy"
-Public Enum KeyinMode   ' ChØ cho phÐp cËp nhËt ký tù ®ång kiÓu
-    NumberType = 1      ' ChØ cho nhËp sè
-    DateType = 2        ' NhËp kiÓu ngµy
-    FormularType = 3    ' ChØ nhËp ký tù c«ng thøc
-    NumberOnlyType = 4
-    FreeType = 5
-End Enum
-
-Public Type LocaleSetting
-    DecimalSeparator As String * 1
-    GroupNumber As String * 1
-    DateLocale As String * 10
-End Type
-
-Public Type FormArgument
-    AllowMultipleSelection As Boolean
-    DataSource As String    ' Name of source range to be saved or loaded data from
-    DataSetName As String   ' Name of object to be processed
-    ErrorRange As String    ' Name to be used in case of blank
-    ReadOnly As Boolean     ' Define whether to lock the list
-    SpecialNote As String   ' Special instruction needed
-    WrapOutput As Boolean   ' Wrap output in bracket for attention
-    NotAllowSelection As String ' Do not allow selection with those contained this string
-    DontAssignActiveCell As Boolean     ' Show or not show selected result
-    SelectedItem As String  ' Return selected data
-    ReturnIndexOnly As Boolean ' to convert return data
-    ReturnDataOrder As String
-    RowSource As Variant    ' raw range
-End Type
-
-' Messages variable
-Global SheetObjName As String
-Global App_Title
-Global ExternalLoad As Boolean
-Global CurrentWorkBook As Workbook
-
-Global AppLocale As LocaleSetting
-Global ShapedLoaded As Boolean
-Global frmObjectParameter As FormArgument
-' for handling user event if there are any...
-Global IndirectSetup As Boolean
-Global AppStatus As Boolean
-' for storing some temporary stuff
-Global TempString As String
-'=============================================
-Function MsgBox(MessageTxt As String, Optional msgStyle As VbMsgBoxStyle) As VbMsgBoxResult
-    Beep
-    Dim iVal As VbMsgBoxStyle, msgBoxIcon As MsoAlertIconType, msgButton As MsoAlertButtonType
-    iVal = msgStyle
-    Select Case msgStyle
-    Case 20, 19, 17, 16: ' Critical case
-        iVal = iVal - 16
-        msgBoxIcon = msoAlertIconCritical
-    Case 36, 35, 33, 32: ' Question case
-        iVal = iVal - 32
-        msgBoxIcon = msoAlertIconQuery
-    Case 52, 51, 49, 48: ' Exclamation case
-        iVal = iVal - 48
-        msgBoxIcon = msoAlertIconWarning
-    Case 68, 67, 65, 64: ' Information case
-        iVal = iVal - 64
-        msgBoxIcon = msoAlertIconInfo
-    End Select
-  
-    Select Case iVal
-    Case 4:
-        msgButton = msoAlertButtonYesNo
-    Case 3:
-        msgButton = msoAlertButtonYesNoCancel
-    Case 1:
-        msgButton = msoAlertButtonOKCancel
-    Case 0:
-        msgButton = msoAlertButtonOK
-    End Select
-    ' Set Hook
-    hHook = SetWindowsHookEx(WH_CBT, AddressOf MsgBoxHookProc, 0, GetCurrentThreadId)
-    ' Display the messagebox
-    MsgBox = Application.Assistant.DoAlert(App_Title, MessageTxt, msgButton, msgBoxIcon, msoAlertDefaultFirst, msoAlertCancelDefault, True)
-End Function
- 
-Private Function MsgBoxHookProc(ByVal lMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
-    If lMsg = HCBT_ACTIVATE Then
-        StrYes = "&C" & ChrW(243)
-        StrNo = "&Kh" & ChrW(244) & "ng"
-        'StrOK = ChrW(272) & ChrW(7891) & "&ng " & ChrW(253)
-        StrOK = "Ch" & ChrW(7845) & "p nh" & ChrW(7853) & "&n"
-        StrCancel = "&H" & ChrW(7911) & "y"
-
-        SetDlgItemText wParam, IDYES, StrConv(StrYes, vbUnicode)
-        SetDlgItemText wParam, IDNO, StrConv(StrNo, vbUnicode)
-        SetDlgItemText wParam, IDCANCEL, StrConv(StrCancel, vbUnicode)
-        SetDlgItemText wParam, IDOK, StrConv(StrOK, vbUnicode)
-        ' Release the Hook
-        UnhookWindowsHookEx hHook
-    End If
-    MsgBoxHookProc = False
-End Function
-
-Function MSG(MsgName As String) As String
-    ' This function will return expected string for better userinterface
-    MSG = "False"
-    Dim MyCell As Range, FoundObj As Boolean
-    Set MyCell = ThisWorkbook.Sheets("Data").Range("MSG_ID_START").Offset(1)
-    While Not FoundObj
-        If Len(Trim(MyCell)) <= 0 Then
-            FoundObj = True
-        Else
-            If MyCell = MsgName Then
-                FoundObj = True
-                MSG = MyCell.Offset(, 1)
-            End If
-        End If
-        Set MyCell = MyCell.Offset(1)
-    Wend
-End Function
+Const gistOwner = "paulsteigel"
 
 Function ActiveInternet() As Boolean
     Dim L As Long, R As Long
@@ -247,8 +92,6 @@ End Function
 Public Function UpdateAvaiable() As Boolean
     ' First check for active internet connection
     If Not ActiveInternet Then Exit Function
-    ' Question for updating...
-    If MsgBox(MSG("MSG_UPDATE_APPLICATION"), vbQuestion + vbYesNo) = vbNo Then Exit Function
     
     Dim myDom As Object, t As String, xNode As Object, lRet As Boolean
     ' get the requested manifest
@@ -274,8 +117,7 @@ Public Function gtDoit(gtDoitmanifestID As String, Optional greenField As Boolea
     Dim xNode As Object ' IXMLDOMNode
     Dim attrib As Object 'IXMLDOMAttribute
     Dim vbCom As Object 'VBComponent
-    Dim nVersion As String
-    On Error GoTo ErrHandler
+    
     ' now we know which gists are needed here
     If (gtWillItWork(dom, greenField)) Then
         ' theres a good chance it will work
@@ -288,36 +130,31 @@ Public Function gtDoit(gtDoitmanifestID As String, Optional greenField As Boolea
                     rawUrl = gtConstructRawUrl(, xNode.Attributes.getNamedItem("filename").Text)
                     ' prevent caching will make it look like a different request
                     g = gtHttpGet(gtPreventCaching(rawUrl))
-                    ' Get version first
-                    nVersion = xNode.Attributes.getNamedItem("required").Text
-                    If nVersion = "x" Then
-                        ' only update if a file is marked with version "x"
-                        ' module name
-                        n = xNode.Attributes.getNamedItem("module").Text
-                        ' does it exist - if so then delete it
-                        Set vbCom = gtModuleExists(n, ThisWorkbook)
-                        
-                        If (Not vbCom Is Nothing) Then
-                            ' delete everything in it
-                            WriteLog "Deleting code in module..." & vbTab & vbCom.Name
-                            With vbCom.codeModule
-                                .DeleteLines 1, .CountOfLines
-                            End With
-                        Else
-                            ' And now add back...
-                            Set vbCom = gtAddModule(n, ThisWorkbook, xNode.Attributes.getNamedItem("type").Text)
-                        End If
-            
-                        ' add in the new code
-                        WriteLog "Start inserting code in module..." & vbTab & vbCom.Name
+                    ' module name
+                    n = xNode.Attributes.getNamedItem("module").Text
+                    ' does it exist - if so then delete it
+                    Set vbCom = gtModuleExists(n, ThisWorkbook)
+                    
+                    If (Not vbCom Is Nothing) Then
+                        ' delete everything in it
+                        WriteLog "Deleting code in module..." & vbTab & vbCom.Name
                         With vbCom.codeModule
-                            .AddFromString g
+                            .DeleteLines 1, .CountOfLines
                         End With
-            
-                        ' stamp it
-                        WriteLog "Writing stam for code in module..." & vbTab & vbCom.Name
-                        gtInsertStamp vbCom, gtDoitmanifestID, rawUrl
+                    Else
+                        ' And now add back...
+                        Set vbCom = gtAddModule(n, ThisWorkbook, xNode.Attributes.getNamedItem("type").Text)
                     End If
+        
+                    ' add in the new code
+                    WriteLog "Start inserting code in module..." & vbTab & vbCom.Name
+                    With vbCom.codeModule
+                        .AddFromString g
+                    End With
+        
+                    ' stamp it
+                    WriteLog "Writing stam for code in module..." & vbTab & vbCom.Name
+                    gtInsertStamp vbCom, gtDoitmanifestID, rawUrl
                 
                 Case "reference"
                     gtAddReference xNode.Attributes.getNamedItem("name").Text, _
@@ -335,7 +172,6 @@ Public Function gtDoit(gtDoitmanifestID As String, Optional greenField As Boolea
  
     End If
     WriteLog "Exit gtDoit..."
-ErrHandler:
 End Function
  
 Private Function gtAddReference(Name As String, guid As String, major As String, minor As String) As Object ' Reference
@@ -509,7 +345,7 @@ Private Function gtConstructRawUrl(Optional gistID As String = "", Optional gist
     ' given a gist, where is it?
     Dim s As String
     ' raw URL
-    s = "https://raw.githubusercontent.com/" & gistOwner & "/CSEDP/master/" & gistID
+    s = "https://raw.githubusercontent.com/" & gistOwner & "/les/master/" & gistID
     ' a gist can have multiple files in it
     If gistFileName <> vbNullString Then s = s & IIf(gistID = "", "", "/") & gistFileName
     ' TODO - specific versions
@@ -676,16 +512,3 @@ End Function
 Sub ShowStatus(msgStatus As String)
     Application.StatusBar = msgStatus
 End Sub
-
-Sub WriteLog(MsgToWrite As String, Optional LogFileName As String = "ImportResult.txt")
-    Dim txtString As String, FileNames As String
-    FileNames = ThisWorkbook.Path & "\" & LogFileName
-    Open FileNames For Append As #1
-    Print #1, Format(Now(), "DD/MM/YYYY HH:MM:SS") & vbTab & "[" & MsgToWrite & "]"
-    Close #1
-    Exit Sub
-ErrorChk:
-    Close #1
-End Sub
-
-
