@@ -41,7 +41,7 @@ Private Sub ProtectSheet(Prm As Boolean)
     Dim tsh As Worksheet
     On Error Resume Next
     For Each tsh In ThisWorkbook.Sheets
-        If tsh.Name Like "Part*" Then
+        If tsh.Name Like "Part*" Or tsh.Name = "General" Or tsh.Name = "Ranking" Then
             If Prm Then
                 tsh.Protect
             Else
