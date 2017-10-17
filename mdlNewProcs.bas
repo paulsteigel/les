@@ -1,4 +1,3 @@
-Attribute VB_Name = "mdlNewProcs"
 Option Explicit
 Global AppCalculation As Boolean
 

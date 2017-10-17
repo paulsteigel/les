@@ -1,4 +1,3 @@
-Attribute VB_Name = "mdlImportAccess"
 Option Explicit
 Private DefaultTable As String
 

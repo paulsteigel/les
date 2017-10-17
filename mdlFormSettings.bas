@@ -1,4 +1,3 @@
-Attribute VB_Name = "mdlFormSettings"
 Option Explicit
 
 ' for Unicode caption painting

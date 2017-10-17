@@ -1,4 +1,3 @@
-Attribute VB_Name = "mdl_WB"
 Option Explicit
 
 Sub GetObjSource(ObjControl As Control, Optional ParrentID As String = "", _

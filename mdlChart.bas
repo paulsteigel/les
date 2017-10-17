@@ -1,4 +1,3 @@
-Attribute VB_Name = "mdlChart"
 Option Explicit
 
 Sub AddChartObject(Wrd As Object, DataSource As Object, Series As Range, ChartTitle As String, Optional ChartType As Long = 1)

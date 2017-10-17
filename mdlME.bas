@@ -1,4 +1,3 @@
-Attribute VB_Name = "mdlME"
 Option Explicit
 Global Const AppDatabase = "m_c_les_project.mdb"
 ' This is the control module for M&E sheet

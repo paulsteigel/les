@@ -1,4 +1,3 @@
-Attribute VB_Name = "mdl_Style"
 'gistThat@mcpher.com :do not modify this line - see ramblings.mcpher.com for details: updated on 10/15/2014 8:32:07 AM : from manifest: gist https://raw.githubusercontent.com/paulsteigel/NMPRP/master/mdl_Style.bas
 Option Explicit
 

@@ -1,4 +1,3 @@
-Attribute VB_Name = "mdlFileFolders"
 Option Explicit
 
 ' This module is for folder and file stuff

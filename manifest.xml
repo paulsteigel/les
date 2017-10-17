@@ -6,15 +6,14 @@
 			<item3 gistid="8839597" version="1" filename="mdl_App.bas" module="mdl_App" type="version" />
 			<item4 gistid="8839597" version="1" filename="mdl_Style.bas" module="mdl_Style" type="module" />
 			<item5 gistid="8839597" version="1" filename="mdl_WB.bas" module="mdl_WB" type="module" />
-			<item6 gistid="8839597" version="1" filename="mdlAutoUpdate.bas" module="mdlAutoUpdate" type="module" />
-			<item7 gistid="8839597" version="1" filename="mdlChart.bas" module="mdlChart" type="module" />
-			<item8 gistid="8839597" version="1" filename="mdlFileFolders.bas" module="mdlFileFolders" type="module" />
-			<item9 gistid="8839597" version="1" filename="mdlFormSettings.bas" module="mdlFormSettings" type="module" />
-			<item10 gistid="8839597" version="1" filename="mdlFunctions.bas" module="mdlFunctions" type="module" />		
-			<item11 gistid="8839597" version="1" filename="mdlImportAccess.bas" module="mdlImportAccess" type="module" />
-			<item12 gistid="8839597" version="1" filename="mdlME.bas" module="mdlME" type="module" />
-			<item13 gistid="8839597" version="1" filename="mdlNewProcs.bas" module="mdlNewProcs" type="module" />
-			<item14 gistid="8839597" version="1" filename="mdlSaveForm.bas" module="mdlSaveForm" type="module" />
+			<item6 gistid="8839597" version="1" filename="mdlChart.bas" module="mdlChart" type="module" />
+			<item7 gistid="8839597" version="1" filename="mdlFileFolders.bas" module="mdlFileFolders" type="module" />
+			<item8 gistid="8839597" version="1" filename="mdlFormSettings.bas" module="mdlFormSettings" type="module" />
+			<item9 gistid="8839597" version="1" filename="mdlFunctions.bas" module="mdlFunctions" type="module" />		
+			<item10 gistid="8839597" version="1" filename="mdlImportAccess.bas" module="mdlImportAccess" type="module" />
+			<item11 gistid="8839597" version="1" filename="mdlME.bas" module="mdlME" type="module" />
+			<item12 gistid="8839597" version="1" filename="mdlNewProcs.bas" module="mdlNewProcs" type="module" />
+			<item13 gistid="8839597" version="1" filename="mdlSaveForm.bas" module="mdlSaveForm" type="module" />
 		</gists>
     </manifest>
 </gistAutoUpdate>

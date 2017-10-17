@@ -1,4 +1,3 @@
-Attribute VB_Name = "mdlFunctions"
 Option Explicit
 ' Import
 #If VBA7 Then

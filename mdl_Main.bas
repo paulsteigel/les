@@ -1,4 +1,3 @@
-Attribute VB_Name = "mdl_Main"
 Option Explicit
 
 ' For storing item attribute
