@@ -1,14 +1,20 @@
 <gistAutoUpdate info="this is a manifest for Autoupdating VBA code distribution">
     <manifest description="Update manifest and associated classes and modules" contact="ngocdd@sfdp.net">
         <gists>			
-		<item1 gistid="3414216" version="7" filename="" module="" type="version" />
-		<item2 gistid="3414216" version="" filename="mdl_Global.bas" module="mdl_Global" type="module" />
-		<item3 gistid="3414216" version="" filename="mdl_App.bas" module="mdl_App" type="module" />
-		<item4 gistid="3414216" version="" filename="mdl_Functions.bas" module="mdl_Functions" type="module" />
-		<item5 gistid="3414216" version="" filename="mdl_Const.bas" module="mdl_Const" type="module" />
-		<item6 gistid="3414216" version="" filename="mdl_Main.bas" module="mdl_Main" type="module" />
-		<item7 gistid="3414216" version="" filename="mdl_Mis.bas" module="mdl_Mis" type="module" />
-		<item8 gistid="3414216" version="" filename="mdl_Style.bas" module="mdl_Style" type="module" />
-        </gists>
+		<item1 gistid="8839597" version="1" filename="clsDbConnection.cls" module="clsDbConnection" type="class"/>
+		<item2 gistid="8839597" version="1" filename="clsWordDocument.cls" module="clsWordDocument" type="class"/>
+		<item3 gistid="8839597" version="1" filename="mdl_App.bas" module="mdl_App" type="version" />
+		<item4 gistid="8839597" version="1" filename="mdl_Style.bas" module="mdl_Style" type="module" />
+		<item5 gistid="8839597" version="1" filename="mdl_WB.bas" module="mdl_WB" type="module" />
+		<item6 gistid="8839597" version="1" filename="mdlAutoUpdate.bas" module="mdlAutoUpdate" type="module" />
+		<item7 gistid="8839597" version="1" filename="mdlChart.bas" module="mdlChart" type="module" />
+		<item8 gistid="8839597" version="1" filename="mdlFileFolders.bas" module="mdlFileFolders" type="module" />
+		<item9 gistid="8839597" version="1" filename="mdlFormSettings.bas" module="mdlFormSettings" type="module" />
+		<item10 gistid="8839597" version="1" filename="mdlFunctions.bas" module="mdlFunctions" type="module" />		
+		<item11 gistid="8839597" version="1" filename="mdlImportAccess.bas" module="mdlImportAccess" type="module" />
+		<item12 gistid="8839597" version="1" filename="mdlME.bas" module="mdlME" type="module" />
+		<item13 gistid="8839597" version="1" filename="mdlNewProcs.bas" module="mdlNewProcs" type="module" />
+		<item14 gistid="8839597" version="1" filename="mdlSaveForm.bas" module="mdlSaveForm" type="module" />
+	</gists>
     </manifest>
 </gistAutoUpdate>
