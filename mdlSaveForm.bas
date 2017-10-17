@@ -351,8 +351,11 @@ Sub Export2Excel(FilterStr As String)
     Application.StatusBar = Replace(StatusTxt, "%%", "[" & wsh.Name & "]")
         
     Set rs = dbs.GetRecordSet(SqlTxt)
-    wsh.Cells(2, 1).CopyFromRecordset rs
-    
+    With wsh
+        .Cells(2, 1).CopyFromRecordset rs
+        .Range("W:W").NumberFormat = "General"
+        .Range("EI:EJ").NumberFormat = "General"
+    End With
     ' Show the sheeet now
     wb.Names("rngFilter_hhld").RefersToRange.AutoFilter
     wsh.UsedRange.WrapText = False
@@ -468,5 +471,3 @@ Private Sub SetSheetSize(SheetName As String)
         Set oCell = oCell.Offset(0, 1)
     Wend
 End Sub
-
-
