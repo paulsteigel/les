@@ -1,10 +1,9 @@
-'gistThat@mcpher.com :do not modify this line - see ramblings.mcpher.com for details: updated on 10/18/2017 12:33:33 AM : from manifest: gist https://raw.githubusercontent.com/paulsteigel/les/master/mdlAppLoad.bas
 Option Explicit
 
 Function GetAppVersion() As Long
     ' This is to get current version of the application
     ' Modify this line when a new version is comming
-    GetAppVersion = 3
+    GetAppVersion = 2
 End Function
 
 Sub Patch()
@@ -42,7 +41,13 @@ Private Sub ProtectSheet(Prm As Boolean)
     Dim tsh As Worksheet
     On Error Resume Next
     For Each tsh In ThisWorkbook.Sheets
-        If Prm Then tsh.Protect Else tsh.Unprotect
+        If tsh.Name Like "Part*" Then
+            If Prm Then
+                tsh.Protect
+            Else
+                tsh.Unprotect
+            End If
+        End If
     Next
     Set tsh = Nothing
 End Sub
