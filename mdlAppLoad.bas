@@ -4,15 +4,11 @@ Option Explicit
 Function GetAppVersion() As Long
     ' This is to get current version of the application
     ' Modify this line when a new version is comming
-    GetAppVersion = 1
+    GetAppVersion = 2
 End Function
 
-Private Sub Patch()
-'
-' Macro1 Macro
-'
-
-'
+Sub Patch()
+    ShowOff
     Dim tSheet As Worksheet
     Set tSheet = ThisWorkbook.Sheets("household")
     With tSheet
@@ -20,6 +16,8 @@ Private Sub Patch()
         .Range("EI:EJ").NumberFormat = "General"
     End With
     Set tSheet = Nothing
+    SetValidation
+    ShowOff True
 End Sub
 
 Private Sub SetValidation()
