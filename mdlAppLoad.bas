@@ -3,7 +3,7 @@ Option Explicit
 Function GetAppVersion() As Long
     ' This is to get current version of the application
     ' Modify this line when a new version is comming
-    GetAppVersion = 2
+    GetAppVersion = 3
 End Function
 
 Sub Patch()
