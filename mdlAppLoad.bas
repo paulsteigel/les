@@ -1,3 +1,4 @@
+'gistThat@mcpher.com :do not modify this line - see ramblings.mcpher.com for details: updated on 10/18/2017 1:26:29 AM : from manifest: gist https://raw.githubusercontent.com/paulsteigel/les/master/mdlAppLoad.bas
 Option Explicit
 
 Function GetAppVersion() As Long
@@ -7,6 +8,7 @@ Function GetAppVersion() As Long
 End Function
 
 Sub Patch()
+    MsgBox "Hi there1... this is a test for auto update...", vbInformation
     ShowOff
     Dim tSheet As Worksheet
     Set tSheet = ThisWorkbook.Sheets("household")
